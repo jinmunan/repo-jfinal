@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="referrer" content="always">
+	
+	<meta name="keywords" content="jfinal blog app">
+	<meta name="description" content="JFinal 官方商城 jfinal blog app">
+	<title>jfinal blog admin</title>
+	
+	<link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/assets/lib/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/assets/css/jfinal-blog-admin.css">
+</head>
+
+<body>
+	
+	<!-- 根容器 -->
+	<div class="root-box container-fluid">
+		
+		
+		<!-- 左部容器 -->
+		<div class="left-box">
+			<!-- 实现滚动功能容器 -->
+			<div class="left-scroll-box">
+				<div class="left-logo-box">
+					<a href="/admin">JFinal Blog</a>
+				</div>
+				<div class="left-menu-box">
+					#include("/_view/_admin/common/_menu.html")
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- 右部容器 -->
+		<div class="right-box">
+			<!-- 内容容器，kit.fill(..) 函数动态填充内容 -->
+			<div id="content-box" class="container-fluid">
+				
+			</div>
+		</div>
+		
+		
+		<!-- 底部容器 -->
+		<div class="footer-box">
+			<a href="https://jfinal.com" target="_blank">Copyright &copy; JFinal.com</a>
+        </div>
+        
+        
+	</div>
+	
+	<script src="/assets/lib/jquery/jquery-3.5.1.min.js"></script>
+	<script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/lib/layer/layer.js"></script>
+	<script src="/assets/js/jfinal-kit.js"></script>
+	<script src="/assets/js/jfinal-blog-admin.js"></script>
+	
+</body>
+</html>
+
+

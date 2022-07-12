@@ -1,0 +1,17 @@
+<!-- 头部容器 -->
+<div class="header-box">
+	<div class="crumb">
+		<i class="fa fa-home"></i>
+		<a href="/admin">首页</a>/<span>#(crumb)</span>
+	</div>
+	
+	### 不传递 searchUrl 参数时，将不显示搜索框
+	#if (searchUrl)
+	<div class="search">
+		<form onsubmit="return false;">
+			<input id="kw" type='text' searchUrl='#(searchUrl)' value='#(searchKey)' placeholder='搜索'>
+			<input type='submit' onclick='admin.search();' value=' '>
+		</form>
+	</div>
+	#end
+</div>

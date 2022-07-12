@@ -1,0 +1,91 @@
+<!--
+   弹出层 html、css、js 封装在此同一个模板文件中，模块化管理
+ -->
+
+<!-- 弹出层 title -->
+<div class="layui-layer-title" style="cursor: move;">
+	上传图片
+</div>
+
+<!-- 弹出层主体内容 -->
+<div class="open-box">
+	<form id="open-form" enctype="multipart/form-data" action="/admin/image/upload">
+		
+		<div class="custom-file">
+			### 注意必须要有 name 属性，否则无法上传
+			<input type="file" name="upload" class="custom-file-input">
+			<label class="custom-file-label">选择图片</label>
+		</div>
+		
+	</form>
+</div>
+
+<!-- 弹出层 button -->
+<div class="layui-layer-btn">
+	<a class="layui-layer-btn0" onclick="$('#open-form').submit();">上传</a>
+	<a class="layui-layer-btn1">取消</a>
+</div>
+
+<!-- 弹出层样式 -->
+<style>
+	/*
+	  弹出层的宽度 width 需要在绑定弹出事件的组件上通过 open 配置，
+	  例如：open="{area:'365px', offset:'139px'}"
+	       上例中的 area 配置宽度为 365px，y 轴的 top 位为 139px
+	*/
+	.open-box {
+		padding: 30px 30px 15px;
+	}
+	
+	.layui-layer-btn {
+		/* 比 open-box 的 padding-right 少 5px 可对齐 */
+		padding-right: 25px;
+		padding-bottom: 20px;
+	}
+</style>
+
+<!-- 使用 jquery form 上传文件 -->
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+
+<!-- 弹出层 js 脚本 -->
+<script>
+	
+	$(function() {
+		$('.custom-file-input').on('change', showSelectedFileName);
+	});
+	
+	/**
+	 * 显示选中文件
+	 */
+	function showSelectedFileName() {
+		var fileName = $(this).val();
+		$('.custom-file-label').html(fileName);
+	}
+	
+	/**
+	 * 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+	 */
+	$("#open-form").ajaxForm({
+		dataType: 'json', type: 'POST',
+		beforeSerialize: function($form, options) {
+			kit.loading({msg: '正在上传图片, 请稍候 .....'});
+		},
+		success: function(ret) {
+			kit.closeLoading();
+			
+			// 上传成功格式：{"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
+			// 上传失败格式：{"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
+			if (ret.uploaded != 0) {
+				layer.closeAll();
+				kit.fill('/admin/image', null, '#content-box');
+				kit.ok('上传成功');
+			} else {
+				kit.fail('上传失败: ' + ret.error.message);
+			}
+		}
+	});
+	
+</script>
+
+
+
