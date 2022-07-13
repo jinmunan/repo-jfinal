@@ -1,8 +1,0 @@
-# db config
-jdbcUrl = jdbc:mysql://91.200.242.122:3306/ly-db-jfinal-blog?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-user = root
-password = zn171912
-
-devMode = true
-engineDevMode = true
-

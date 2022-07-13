@@ -1,0 +1,3 @@
+userName=zhangsan
+email=no-reply@jfinal.com
+devMode=true

@@ -1,0 +1,13 @@
+<!--使用layout()组件的地方-->
+#@layout()
+<!--定义main组件-->
+#define main()
+<h1>Blog管理 ---&gt; 创建Blog
+</h1>
+<div class="form_box">
+    <form action="/blog/save" method="post">
+        <!--包含_form的页面-->
+        #include("_form.html")
+    </form>
+</div>
+#end

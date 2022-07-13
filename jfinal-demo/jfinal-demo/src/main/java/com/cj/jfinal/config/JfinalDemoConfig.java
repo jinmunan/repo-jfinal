@@ -1,9 +1,10 @@
 package com.cj.jfinal.config;
 
-import com.cj.jfinal.controller.HelloController;
+
+import com.cj.jfinal.model.Blog;
 import com.jfinal.config.*;
-import com.jfinal.json.MixedJsonFactory;
-import com.jfinal.render.ViewType;
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 
 /**
@@ -24,6 +25,14 @@ public class JfinalDemoConfig extends JFinalConfig {
     public void configConstant(Constants constants) {
         // 设置开发模式
         constants.setDevMode(true);
+
+        /**
+         * 支持 Controller、Interceptor、Validator 之中使用 @Inject 注入业务层，并且自动实现 AOP
+         * 注入动作支持任意深度并自动处理循环注入
+         */
+        constants.setInjectDependency(true);
+        // 配置对超类中的属性进行注入
+        constants.setInjectSuperClass(true);
 
         /**
          * 		   // 配置 aop 代理使用 cglib，否则将使用 jfinal 默认的动态编译代理方案
@@ -86,11 +95,14 @@ public class JfinalDemoConfig extends JFinalConfig {
      */
     @Override
     public void configRoute(Routes routes) {
+        // 基本路由
+        routes.setBaseViewPath("/view");
         // 路由扫描
-        //routes.scan("com.cj.jfinal.");
+        routes.scan("com.cj.jfinal.controller");
 
         // 原本是注册路由
-        routes.add("/hello", HelloController.class);
+        //routes.add("/hello", HelloController.class);
+        //routes.add("/test", TestController.class);
 
         /**
          *         // 如果要将控制器超类中的 public 方法映射为 action 配置成 true，一般不用配置
@@ -118,7 +130,11 @@ public class JfinalDemoConfig extends JFinalConfig {
      */
     @Override
     public void configEngine(Engine engine) {
-
+        /**
+         *         engine.addSharedFunction("/view/common/layout.html");
+         *         engine.addSharedFunction("/view/common/paginate.html");
+         *         engine.addSharedFunction("/view/admin/common/layout.html");
+         */
     }
 
     /**
@@ -128,6 +144,26 @@ public class JfinalDemoConfig extends JFinalConfig {
      */
     @Override
     public void configPlugin(Plugins plugins) {
+        /**
+         *        DruidPlugin dp = new DruidPlugin(jdbcUrl, userName, password);
+         *         plugins.add(dp);
+         *
+         *         ActiveRecordPlugin arp = new ActiveRecordPlugin(dp);
+         *         arp.addMapping("user", User.class);
+         *         plugins.add(arp);
+         */
+
+        DruidPlugin dp = new DruidPlugin("jdbc:mysql://localhost/jfinal", "root", "123456");
+        plugins.add(dp);
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(dp);
+        plugins.add(arp);
+        // ActiveRecordPlugin
+        arp.addMapping("blog", "id", Blog.class);
+    }
+
+    public static DruidPlugin createDruidPlugin() {
+
+        return new DruidPlugin("jdbc:mysql://localhost/jfinal", "root", "123456");
     }
 
     /**
@@ -137,7 +173,14 @@ public class JfinalDemoConfig extends JFinalConfig {
      */
     @Override
     public void configInterceptor(Interceptors interceptors) {
-
+        /**
+         *         // 以下两行代码配置作用于控制层的全局拦截器
+         *         interceptors.add(new AuthInterceptor());
+         *         interceptors.addGlobalActionInterceptor(new AaaInterceptor());
+         *
+         *         // 以下一行代码配置业务层全局拦截器
+         *         interceptors.addGlobalServiceInterceptor(new BbbInterceptor());
+         */
     }
 
     /**
@@ -147,6 +190,18 @@ public class JfinalDemoConfig extends JFinalConfig {
      */
     @Override
     public void configHandler(Handlers handlers) {
+        /**
+         *     handlers.add(new ResourceHandler());
+         */
+    }
 
+    // 系统启动完成后回调
+    @Override
+    public void onStart() {
+    }
+
+    // 系统关闭之前回调
+    @Override
+    public void onStop() {
     }
 }
